@@ -1,0 +1,37 @@
+<!--------------- SOFTSKILLS --------------->
+<div class="container shadow bg-info">
+	<div class="row mt-5">
+		<h5 class="text-center p-1 bg-dark text-light rounded border p-2">SOFTSKILLS</h5>
+	</div>
+	<div class="justify-content-center p-2">
+		<div *ngIf="modoNuevoRegistro=== false">
+			<div class="d-flex justify-content-center mb-4 m-4">
+				<button
+					class="btn btn-sm btn-green border shadow m-1 text-center text-light fw-bold"><!-- (click)="onCrear($event)" -->
+					<span><img src={{logoadd}} alt="editar" class="logo-sm mt-1 bg-white rounded-circle" />AGREGAR
+						SOFTSKILLS</span>
+				</button>
+			</div>
+		</div>
+		<div *ngFor="let mySkills of datosArray  ; let i = index" [attr.data-index]="i">
+			<div class="d-flex justify-content-center mb-4 m-4">
+				<div
+					class="border rounded p-2 col-md-8 col-12 bg-white shadow-lg mb-4 align-items-center justify-content-center text-center">
+					<div class="d-flex justify-content-end">
+						<div class="p-1 justify-content-end">
+							<button class="btn p-0 m-1"> <!-- (click)="onCancelNuevoRegistro()" -->
+								<span><img src={{logopencil}} alt="editar" class="logo-sm mt-1" /></span>
+							</button>
+							<button class="btn p-0 m-1"> <!-- (click)="onSaveNewNuevoRegistro($event)" -->
+								<span><img src={{logodelete}} alt="editar" class="logo-sm mt-1" /></span>
+							</button>
+						</div>
+					</div>
+					<h4><b>Nombre:</b>{{mySkills.name}}</h4>
+					<img class="image-sm" src="{{mySkills.urlImage}}" alt="Imagen asociada...">
+					<h4><b>Nivel:</b>{{mySkills.level}}</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

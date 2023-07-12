@@ -1,0 +1,43 @@
+<!--------------- EXPERIENCIA --------------->
+<div class="container shadow bg-info">
+	<div class="row mt-5">
+		<h5 class="text-center p-1 bg-dark text-light rounded border p-2">EXPERIENCIA</h5>
+	</div>
+	<div class="justify-content-center p-2">
+
+		<div *ngIf="modoNuevoRegistro === false">
+			<div class="d-flex justify-content-center mb-4 m-4">
+				<button
+					class="btn btn-sm btn-green border shadow m-1 text-center text-light fw-bold"><!-- (click)="onCrear($event)" -->
+					<span><img src={{logoadd}} alt="editar" class="logo-sm mt-1 bg-white rounded-circle" />AGREGAR
+						EXPERIENCIA</span>
+				</button>
+			</div>
+		</div>
+
+		<div *ngFor="let myExperiencia of datosArray  ; let i = index" [attr.data-index]="i">
+			<div class="d-flex justify-content-center mb-4 m-4">
+				<div class="border rounded p-2 col-md-8 col-12 bg-white shadow-lg mb-4">
+
+					<div class="d-flex justify-content-end">
+						<div class="p-1">
+							<button class="btn p-0 m-1"> <!-- (click)="onCancelNuevoRegistro()" -->
+								<span><img src={{logopencil}} alt="editar" class="logo-sm mt-1" /></span>
+							</button>
+
+							<button class="btn p-0 m-1"> <!-- (click)="onSaveNewNuevoRegistro($event)" -->
+								<span><img src={{logodelete}} alt="editar" class="logo-sm mt-1" /></span>
+							</button>
+						</div>
+					</div>
+					<!-- <div class="row justify-content-center box1 align-items-center p-1"> -->
+					<h4>Ubicación: {{myExperiencia.ubicacion}}</h4>
+					<h4>Puesto: {{myExperiencia.puesto}}</h4>
+					<h4>Periodo: {{myExperiencia.periodo}}</h4>
+					<h4>Empresa: {{myExperiencia.empresa}}</h4>
+					<h4>Actividades: {{myExperiencia.actividades}}</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

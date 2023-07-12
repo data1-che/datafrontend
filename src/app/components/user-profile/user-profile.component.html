@@ -1,0 +1,20 @@
+<div class="container shadow bg-info">
+	<div class="row mt-5">
+		<h5 class="text-center p-1 bg-dark text-light rounded border p-2">userPro</h5>
+	</div>
+	<section>
+		<h1>Persona Profiles</h1>
+		<p>User: {{user.email}}</p>
+		<p>User: {{user.name}}</p>
+		<!-- <ul>
+			<li *ngFor="let col of user ">
+				{{col}}
+			</li>
+		</ul> -->
+	</section>
+	<div *ngIf="user">
+		<p>Nombre: {{user.name}}</p>
+		<p>Email: {{user.email}}</p>
+	</div>
+
+</div>

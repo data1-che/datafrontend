@@ -1,0 +1,72 @@
+<!--------------- SKILLS --------------->
+<div class="container shadow mt-5 bg-warning">
+	<div class="row">
+		<h5 class="text-center p-2 rounded border bg-dark text-light">SKILLS</h5>
+	</div>
+	<!-- <div *ngIf="modoNuevoRegistro== false">
+		<div class="d-flex justify-content-center mb-4 m-4">
+			<button class="btn btn-sm btn-green border shadow m-1 text-center text-light fw-bold" (click)="onCrear()">
+				<span><img src={{logoadd}} alt="editar" class="logo-sm mt-1 bg-white rounded-circle" />AGREGAR SKILLS</span>
+			</button>
+		</div>
+	</div>
+	<div *ngIf="modoNuevoRegistro== true" class="d-flex justify-content-center align-items-center border-1 shadow" id="createNuevoSoftskills"> -->
+		<!-- <div class="border rounded p-2 col-md-8 col-12 bg-white shadow-lg mb-4"> -->
+		<!-- <form (ngSubmit)="onSubmit()" class="col-md-8 col-12 mb-4" [formGroup ] = "form"> -->
+		<form [formGroup ]="itemForm" (ngSubmit)="isEditing ? editItem() : addItem()" class="col-md-8 col-12 mb-4">
+			<div class="form-group">
+				<label for="descripcion">Descripción:</label>
+				<input type="text" id="descripcion" class="form-control col-md-10 col-12 p-2 mb-2 border rounded border-1 border-warning shadow" formControlName="descripcion">
+				<!-- <div *ngIf = "formControls.descripcion.touched && formControls.descripcion.invalid" class="text-danger"> -->
+					<!-- La descripción es requerida. -->
+				<!-- </div> -->
+			</div>
+			<div class="form-group">
+				<label for="urlImagen">URL Imagen:</label>
+				<input type="text" id="urlImagen" class="form-control col-md-10 col-12 p-2 mb-2 border rounded border-1 border-warning shadow" formControlName="descripcion">
+				<!-- <div *ngIf="formControls.urlImagen?.touched && formControls.urlImagen?.invalid" class="text-danger"> -->
+					<!-- La URL de la imagen es requerida. -->
+				<!-- </div> -->
+			</div>
+			<button type="submit" class="btn btn-primary" [disabled]="itemForm.invalid">
+				{{ isEditing ? 'Modificar' : 'Nuevo' }}
+			</button>
+			<button type="button" class="btn btn-secondary" *ngIf="isEditing" (click)="cancelEdit()">Cancelar</button>
+			<button type="button" class="btn btn-secondary" *ngIf="!isEditing" (click)="startEdit()">Editar</button>
+			
+								<!-- <span><img src={{logocancel}} alt="Cancelar..." class="logo-sm mt-1" /></span> -->
+							<!-- <button class="btn p-0 m-1" type="button" (click)="onSaveNewNuevoRegistro()"> -->
+								<!-- <button class="btn p-0 m-1" type="button" (click)="agregarRegistro()"> -->
+								<!-- <span><img src={{logosave}} alt="Guardar..." class="logo-sm mt-1" /></span> -->
+							<!-- </button> -->
+						<!-- </div> -->
+					<!-- </div> -->
+				<!-- </div> -->
+				<!-- <h3 class="text-center text-info m-3"><img src={{logoSkill}} class="logoSkills mt-1" alt="Logo Skill..."><span>Nuevo Skill</span> -->
+				<!-- </h3> -->
+				
+		</form>
+	</div>
+	
+	<div *ngFor="let mySkills of datosArray  ; let i = index" [attr.data-index]="i">
+		<div class="d-flex justify-content-center mb-4 m-4">
+			<div class="border rounded p-2 col-md-8 col-12 bg-white shadow-lg mb-4">
+				<div class="d-flex justify-content-end">
+					<div class="p-1">
+						<button class="btn p-0 m-1"> <!-- (click)="onCancelNuevoRegistro()" -->
+							<span><img src={{logopencil}} alt="editar" class="logo-sm mt-1" /></span>
+						</button>
+						<button class="btn p-0 m-1" ><!-- (click)="onDelete(i,mySkills.id, $event)" -->
+						<!-- <button class="btn p-0 m-1" (click)="borrarRegistro(mySkills.id)"> -->
+						<!-- (click)="onSaveNewNuevoRegistro($event)" -->
+							<span><img src={{logodelete}} alt="editar" class="logo-sm mt-1" /></span>
+						</button>
+					</div>
+				</div>
+				<!-- <h4>{$i}</h4> -->
+				<h4>{{mySkills.name}}</h4>
+				<h4>{{mySkills.urlImagen}}</h4>
+				<h4>{{mySkills.id}}</h4>
+			</div>
+		</div>
+	</div>

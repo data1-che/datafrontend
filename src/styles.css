@@ -1,1 +1,239 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    box-sizing: border-box;
+}
+.allScreen {
+    width: 100%;
+    height: 100%;
+}
+
+.box1 {
+    border: 2px solid #000;
+}
+/* Puede agregar estilos globales a este archivo y también importar otros archivos de estilo */
+/* body {
+	background-color: rgb(224, 221, 221);
+} */
+
+li {
+	list-style: none;
+}
+
+i {
+    	padding: 5px;
+}
+
+#nav-title {
+    	padding: 10px;
+    	font-weight: 600;
+}
+
+.card {
+    width: auto;
+    height: auto;
+}
+.checentro {
+    align-items: center;
+    justify-content: center;
+
+}
+  .mat-card {
+    border-radius: 10px 10px 10px 10px;
+    margin: 10px 10px;
+    padding: 3px;
+    width: 90%;
+}
+
+/*  .mat-card {
+    display: flex;
+    justify-content: center;
+    border-radius: 10px 10px 10px 10px;
+    margin: 10px 10px 40px 10px;
+    padding: 3px;
+    width: 80%;
+    height: 400px;
+} */
+.example-card {
+    max-width: 400px;
+  }
+  img.mat-card-image {
+	width: 150px;
+	height: 150px;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-title {
+    text-align: center;
+    background-color: gray;
+}
+.mat-button {
+    color: blue;
+    background-color: yellow;
+}
+#info-data {
+    display: flex;
+    justify-content: space-between;
+}
+
+#card-about > img {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-self: center;
+    align-content: center;
+}
+
+#img-about {
+    border-radius: 50%;
+    width: 152px;
+    height: 152px;
+    margin-left: -10px;
+    margin-top: -110px;
+    z-index: 1;
+    box-shadow: 0px 5px 0px rgba(81, 71, 139, 0.171);
+}
+
+#info {
+    padding: 2rem; /*Padding relativo para que se ajuste al tamaño del contenedor*/
+}
+
+#info-action {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+/* 
+    Esto genera el overflow
+    #info-details {
+    width: 300px;
+    flex-shrink: 0;
+} */
+
+
+#info-details ul {
+    list-style: none;
+}
+
+#info-details li a {
+    color: black;
+    text-decoration: none;
+}
+
+#info-details li a img {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+}
+
+#info-details li a h5{
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.title { 
+    display: flex;
+    justify-content: space-between;
+}
+
+.progress {
+    border-radius: 10px;
+}
+
+.progress .progress-bar {
+    border-radius: 10px;
+}
+
+.font1 {
+	font-family: "Comic Sans HS", "Comic Sans", cursive;
+}
+.font2 {
+	font-family: "Arial";
+}
+
+  
+  .chelogo {
+      height: 32px;
+      width: 32px;
+      margin: 0;
+      
+  }
+  .cheimg {
+      height: 280px;
+      width: 200px;
+      position: absolute;
+  }
+  
+
+  .chebox {
+      height: auto;
+      width: auto;
+      border: 3px solid blue;
+      margin: 3px 3px 3px 3px;
+      padding: 3px 3px 3px 3px;
+      align-content: center;
+      align-items: center;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+  .span.iz {
+      text-align: left;
+  }
+.borde1 {
+	border: 1px solid blue;
+}
+.borde2 {
+	border: 3px double red;
+}
+.borde3 {
+	border: 5px solid black;
+	width: auto;
+	height: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 10px 10px 10px;
+	margin-right: 10px;
+	background-color: green;
+	color: red;
+}
+
+  .cheboxm {
+      max-height: 60px ;
+      max-width: 100px;
+      border: 3px solid blue;
+      border-radius: 3%;
+      margin: 3px 3px 3px 3px;
+      padding: 5px 5px 5px 5px;
+      align-items: center;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: center;
+  }
+  .checardcontainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 16px;
+  }
+  .checard {
+      all: unset;
+      border-radius: 4px;
+      border: 1px solid #eee;
+      background-color: #fafafa;
+      height: 400px;
+      width: 200px;
+      margin: 0 8px 16px;
+      padding: 6px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease-in-out;
+      line-height: 24px;
+  }
