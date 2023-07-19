@@ -18,3 +18,19 @@
 .btn-green {
 	background-color: rgb(41, 247, 41);
 }
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 8px;
+	width: 30px;
+}
+.logoEscuela {
+	align-self: center;
+	justify-items: center;
+	width: 100px;
+	height: 100px;
+}

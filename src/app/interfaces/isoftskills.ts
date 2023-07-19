@@ -1,5 +1,5 @@
 export interface Isoftskills {
-    id:String;
+    // id:String;
     name:String;
     urlImage:String;
     level:String;

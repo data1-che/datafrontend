@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PortfolioService } from 'src/app/services/portfolio.service';
+// import { PortfolioService } from 'src/app/services/portfolio.service';
 // import { FirestoreService } from 'src/app/services/firestore.service';
 import { Ipersona } from 'src/app/interfaces/ipersona';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
@@ -45,8 +45,8 @@ export class BannerComponent implements OnInit {
 	ocupacion!: any;
 	ubication!: any;
 	company: any = [];
-
-	constructor(private portfolioData: PortfolioService, public firestore: AngularFirestore,
+// private portfolioData: PortfolioService,
+	constructor( public firestore: AngularFirestore,
 		private firebaseService: FirebaseService) {
 		this.datosCollection = this.firestore.collection(this.nombreColeccion);
 		this.datos = this.datosCollection.valueChanges();
@@ -132,6 +132,7 @@ export class BannerComponent implements OnInit {
 	verificarYCrearMiColeccion(): void {
 		this.firebaseService.verificarYCrearColeccion('persona',
 		{
+			id: '1',
 			nombres: 'Hernan',
 			apellido: 'Canestraro',
 			fecha_nacimiento: '09/27/76',
@@ -148,6 +149,7 @@ export class BannerComponent implements OnInit {
 	verificarYCrearMiColeccion2(): void {
 		this.firebaseService.verificarYCrearColeccion('aboutme',
 		{
+			id: '1',
 			bannerImage: '',
 			profilePicture: '',
 			ubication: '',

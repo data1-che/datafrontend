@@ -152,7 +152,12 @@ i {
 	font-family: "Arial";
 }
 
-  
+.chelogo-sm {
+	width: 1.2em;
+	height: 1.2em;
+	margin: .5em;
+	transition: .3s;
+}
   .chelogo {
       height: 32px;
       width: 32px;

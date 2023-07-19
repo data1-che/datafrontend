@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "campito"
-    ]
+    ],
+    "cmake.configureOnOpen": true
 }

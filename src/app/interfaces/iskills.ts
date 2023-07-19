@@ -1,5 +1,5 @@
 export interface Iskills {
-    id: String;
+    // id: String;
     descripcion: String;
     urlImagen: String;
 }

@@ -1,5 +1,5 @@
 export interface Iproyecto {
-    id:String;
+    // id:String;
     titulo: String;
     imagen: String;
     descripcion: String;

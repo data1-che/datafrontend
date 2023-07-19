@@ -12,14 +12,14 @@ export class EducacionService {
     this.educacionCollection = this.firestore.collection<Ieducacion>('educacion');
   }
 
-  crearElemento(elemento: Ieducacion): Promise<void> {
+ /*  crearElemento(elemento: Ieducacion): Promise<void> {
     const id = this.firestore.createId();
     return this.educacionCollection.doc(id).set({
       ...elemento,
       id: id
     });
   }
-
+ */
   actualizarElemento(id: string, elemento: Ieducacion): Promise<void> {
     return this.educacionCollection.doc(id).update(elemento);
   }

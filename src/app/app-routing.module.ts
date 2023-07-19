@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Che404Component } from './components/che404/che404.component';
 import { PortfolioComponent } from './components/portfolio/portfolio.component';
-import { chelibComponent } from "./components/chelib/chelib.component";
+// import { chelibComponent } from "./components/chelib/chelib.component";
 import { LoginComponent } from './components/login/login.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
+// import { UserProfileComponent } from './components/user-profile/user-profile.component';
 // import { FooterComponent } from './components/footer/footer.component';
 // import { BannerComponent } from './components/banner/banner.component';
 import { SkillsComponent } from './components/skills/skills.component';
@@ -12,15 +12,15 @@ import { SoftskillsComponent } from './components/softskills/softskills.componen
 import { ProyectosComponent } from './components/proyectos/proyectos.component';
 import { RegisterComponent } from './components/register/register.component';
 // import { IngresarComponent } from './components/ingresar/ingresar.component';
-import { GuardGuard } from './services/guard.guard';
+// import { GuardGuard } from './services/guard.guard';
 
 const routes: Routes = [
-	{ path: 'portfolio', canActivate:[GuardGuard], component: PortfolioComponent },
+	{ path: 'portfolio', /* canActivate:[GuardGuard], */ component: PortfolioComponent },
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: 'register', component: RegisterComponent },
 	// { path: 'chelib', component: chelibComponent },
 	{ path: 'login', component: LoginComponent },
-	{ path: 'user-profile', component: UserProfileComponent },
+	// { path: 'user-profile', component: UserProfileComponent },
 	// { path: 'footer', component: FooterComponent },
 	// { path: 'banner', component: BannerComponent },
 	{ path: 'skills', component: SkillsComponent },
@@ -33,4 +33,4 @@ const routes: Routes = [
 	imports: [RouterModule.forRoot(routes)],
 	exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { } 

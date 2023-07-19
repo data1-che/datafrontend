@@ -1,5 +1,5 @@
 export interface Iexperiencia {
-    id:String;
+    // id:String;
     ubicacion: String;
     puesto: String;
     periodo: String;

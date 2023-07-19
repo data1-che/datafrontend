@@ -2,7 +2,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "AP-FrontEnd-ac93a": {
+    "datafront": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -16,15 +16,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/AP-FrontEnd-ac93a",
+            "outputPath": "dist/datafront",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
             "allowedCommonJsDependencies": [
               "sweetalert2"
             ],
-            "polyfills": [
-              "zone.js"
-            ],
+           
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -33,10 +32,10 @@
             "styles": [
               "src/styles.css",
               "src/custom-theme.scss",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "./node_modules/bootstrap/dist/js/bootstrap.js"
             ]
           },
           "configurations": {
@@ -49,7 +48,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
+                  "maximumWarning": "12kb",
                   "maximumError": "94kb"
                 }
               ],
@@ -76,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "AP-FrontEnd-ac93a:build:production"
+              "browserTarget": "datafront:build:production"
             },
             "development": {
-              "browserTarget": "AP-FrontEnd-ac93a:build:development"
+              "browserTarget": "datafront:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,12 +86,13 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "AP-FrontEnd-ac93a:build"
+            "browserTarget": "datafront:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "main":"src/main.ts",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
@@ -112,7 +112,7 @@
           "builder": "@angular/fire:deploy",
           "options": {
             "version": 2,
-            "browserTarget": "AP-FrontEnd-ac93a:build:production"
+            "browserTarget": "datafront:build:production"
           }
         }
       }

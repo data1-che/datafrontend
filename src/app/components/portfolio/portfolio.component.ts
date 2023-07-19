@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import auth from 'firebase/compat/app';
-import firebase from '@firebase/app-compat';
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { getAuth } from 'firebase/auth';
 @Component({
 	selector: 'app-portfolio',
 	templateUrl: './portfolio.component.html',
 	styleUrls: ['./portfolio.component.css']
 })
 export class PortfolioComponent implements OnInit {
-	user = firebase.auth().currentUser;
+	constructor(private afAuth: AngularFireAuth) {}
+	user = getAuth().currentUser;
 	ngOnInit(): void {
-		console.log('DEBUG: PORTFOLIO'+this.user);
+		console.log('DEBUG: PORTFOLIO ln13');
 		if (this.user) {
-			alert('Bienvenido: '+this.user);
-			console.log('DEBUG: Portfolio');
+			console.log('DEBUG: Portfolio USUARIO OK');
 		}
 	}
 }

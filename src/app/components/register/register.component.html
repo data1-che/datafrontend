@@ -60,7 +60,7 @@
 	<div class="container-fluid imagen-fondo d-flex justify-content-center">
 		<div class="row justify-content-center col-10 mt-3">
 			<form class="m-3 col-md-4 col-sm-10 bg-white p-2 rounded shadow" [formGroup]="form"
-				(ngSubmit)="onRegister($event)">
+				(ngSubmit)="onRegister($event)" id="form">
 				<h3 class="text-center text-info mt-2">¡CREAR TU PORTAFOLIO!</h3>
 
 				<div class="mb-1 mt-1">
@@ -81,7 +81,7 @@
 					<label for="firstName" class="form-label">Nombre:</label>
 					<input type="text" formControlName="firstName"
 						[ngClass]="{'is-invalid': firstName?.errors && firstName?.touched, 'is-valid': !firstName?.errors && firstName?.touched}"
-						class="form-control" id="firstName" aria-describedby="nombreHelp">
+						class="form-control" id="firstName" aria-describedby="firstNameHelp">
 					<div *ngIf="firstName?.errors && firstName?.touched">
 						<p *ngIf="firstName?.hasError('required')" class="text-danger">
 							El nombre es requerido.
@@ -95,7 +95,7 @@
 					<label for="lastName" class="form-label">Apellido:</label>
 					<input type="text" formControlName="lastName"
 						[ngClass]="{'is-invalid': lastName?.errors && lastName?.touched, 'is-valid': !lastName?.errors && lastName?.touched}"
-						class="form-control" id="lastName" aria-describedby="nombreHelp">
+						class="form-control" id="lastName" aria-describedby="lastNameHelp">
 					<div *ngIf="lastName?.errors && lastName?.touched">
 						<p *ngIf="lastName?.hasError('required')" class="text-danger">
 							El apellido es requerido.
@@ -109,7 +109,7 @@
 					<label for="displayName" class="form-label">Alias:</label>
 					<input type="text" formControlName="displayName"
 						[ngClass]="{'is-invalid': displayName?.errors && displayName?.touched, 'is-valid': !displayName?.errors && displayName?.touched}"
-						class="form-control" id="displayName" aria-describedby="nombreHelp">
+						class="form-control" id="displayName" aria-describedby="displayHelp">
 					<div *ngIf="displayName?.errors && displayName?.touched">
 						<p *ngIf="displayName?.hasError('required')" class="text-danger">
 							El alias es requerido.
@@ -123,7 +123,7 @@
 					<label for="phone" class="form-label">Teléfono:</label>
 					<input type="text" formControlName="phone"
 						[ngClass]="{'is-invalid': phone?.errors && phone?.touched, 'is-valid': !phone?.errors && phone?.touched}"
-						class="form-control" id="phone" aria-describedby="nombreHelp">
+						class="form-control" id="phone" aria-describedby="phoneHelp">
 					<div *ngIf="phone?.errors && phone?.touched">
 						<p *ngIf="phone?.hasError('required')" class="text-danger">
 							El teléfono es requerido.
@@ -137,7 +137,7 @@
 					<label for="address" class="form-label">Dirección:</label>
 					<input type="text" formControlName="address"
 						[ngClass]="{'is-invalid': address?.errors && address?.touched, 'is-valid': !address?.errors && address?.touched}"
-						class="form-control" id="address" aria-describedby="nombreHelp">
+						class="form-control" id="address" aria-describedby="addressHelp">
 					<div *ngIf="address?.errors && address?.touched">
 						<p *ngIf="address?.hasError('required')" class="text-danger">
 							La dirección es requerida.
@@ -149,9 +149,9 @@
 				</div>
 				<div class="mb-1 mt-3">
 					<label for="photoURL" class="form-label">Foto URL:</label>
-					<input type="file" formControlName="photoURL"
+					<input type="text" formControlName="photoURL"
 						[ngClass]="{'is-invalid': photoURL?.errors && photoURL?.touched, 'is-valid': !photoURL?.errors && photoURL?.touched}"
-						class="form-control" id="photoURL" aria-describedby="nombreHelp">
+						class="form-control" id="photoURL" aria-describedby="photoHelp">
 					<div *ngIf="photoURL?.errors && photoURL?.touched">
 						<p *ngIf="photoURL?.hasError('required')" class="text-danger">
 							El nombre de la URL es requerido.
@@ -165,7 +165,7 @@
 					<label for="password" class="form-label">Contraseña:</label>
 					<input type="password" formControlName="password"
 						[ngClass]="{'is-invalid': password?.errors && password?.touched, 'is-valid': !password?.errors && password?.touched}"
-						class="form-control" id="exampleInputpassword1">
+						class="form-control" id="password">
 					<div *ngIf="password?.errors && password?.touched">
 						<p *ngIf="password?.hasError('required')" class="text-danger">
 							La contraseña es requerida.
@@ -175,9 +175,9 @@
 						</p>
 					</div>
 				</div>
-				<button type="submit"
+				<button type="submit" id="enviarBtn" 
 					class="btn btn-primary btn-sm w-100 fw-bold text-light border border-light mt-3">CREAR CUENTA</button>
-					<button type="text" class="btn btn-warning btn-sm w-100 fw-bold border mt-3" routerLink="/login">CANCELAR</button>
+					<button type="text" class="btn btn-warning btn-sm w-100 fw-bold border mt-3" id="boton-cerrar" (click)="cerrarFormulario()">CANCELAR</button>
 			</form>
 		</div>
 	</div>

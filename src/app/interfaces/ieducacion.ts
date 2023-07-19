@@ -1,11 +1,10 @@
-
 export interface Ieducacion {
-    id?: String;
+    // id?: String;
     escuela: String;
     titulo: String;
     imagen: String;
     carrera: String;
-    puntaje: 100;
+    puntaje: Number;
     inicio: String;
     fin: String;
 }

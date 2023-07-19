@@ -1,9 +1,4 @@
-.logo-sm {
-	width: 1.2em;
-	height: 1.2em;
-	margin: .5em;
-	transition: .3s;
-}
+
 .logoSkills{
     width: 8em;
     height: 8em;
@@ -18,12 +13,6 @@
     height: 2em;
     width: 2em;
     margin-bottom: .5em;
-  }
-  
-  .logo-sm{
-    width: 1.2em;
-    height: 1.2em;
-    margin: .5em;
   }
   
   .mt-8{

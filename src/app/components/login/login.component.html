@@ -8,7 +8,7 @@
 				<label for="email" class="form-label">Correo</label>
 				<input type="text" formControlName="email"
 					[ngClass]="{'is-invalid': email?.errors && email?.touched, 'is-valid': !email?.errors && email?.touched}"
-					class="form-control" id="email" aria-describedby="emailHelp">
+					class="form-control" id="email">
 				<div *ngIf="email?.errors && email?.touched">
 					<p *ngIf="email?.hasError('required')" class="text-danger">
 						El nombreUsuario es requerido.

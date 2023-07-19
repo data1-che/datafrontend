@@ -1,5 +1,6 @@
 .navbar {
     flex-wrap: nowrap;
+    background-color: cornflowerblue;
 }
 .logointi{
     width: 150px;

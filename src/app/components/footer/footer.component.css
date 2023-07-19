@@ -10,8 +10,8 @@
     background-color: black;
     color: chartreuse;
     text-align: center;
-    margin: 15px;
-    padding: 4px;
+    /* margin: 15px; */
+    /* padding: 4px; */
     justify-content: center;
     align-items: center;
 }

@@ -1,318 +1,284 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators, FormBuilder, NonNullableFormBuilder } from '@angular/forms';
-import { PortfolioService } from './../../services/portfolio.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import Swal from 'sweetalert2';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable, map, take } from 'rxjs';
 import { Isoftskills } from 'src/app/interfaces/isoftskills';
+import { user } from '@angular/fire/auth';
+import { finalize } from 'rxjs/operators';
+import * as firebase from 'firebase/compat';
+import { AngularFireUploadTask } from '@angular/fire/compat/storage';
+import { percentage } from '@angular/fire/storage/public_api';
 // import { CheMediaService } from 'src/app/services/che-media.service';
 
 
-@Component( {
+@Component({
 	selector: 'app-softskills',
 	templateUrl: './softskills.component.html',
 	styleUrls: ['./softskills.component.css']
-} )
+})
 
 
 export class SoftskillsComponent implements OnInit {
+	task!: AngularFireUploadTask;
+	percentage!: Observable<number | undefined>;
+
+
 	logopencil = "https://drive.google.com/uc?export=download&id=1jA2K7nPYax0JVefFmgn8HvsYre_25zie";
 	logoadd = "https://drive.google.com/uc?export=download&id=11BKh21cSfuiTBDHbY26XH5Ux9TBVYdWm";
 	logoedu = "https://drive.google.com/uc?export=download&id=1_TzJ4uPlPA_qU9DaaARLKqlLoXVi5pWu   ";
 	logosave = "https://drive.google.com/uc?export=download&id=1QjXoDP0V0L7EHnjlfAx5bMFH2T-NbYU7";
 	logocancel = "https://drive.google.com/uc?export=download&id=1DnHtyYLt7LgH7Nl6HsIOfSh2CDjNiYAE";
 	logodelete = "https://drive.google.com/uc?export=download&id=1iW5i4HOltXKRwV0Q2qsJp6mrZvmFq0rw";
-	mySoftskills: any;
-	modoEdicion: boolean = false;
-	modoNuevoRegistro: boolean = false;
-	i!: number;
-	editID!: number;
-	form: FormGroup;
 	nombreColeccion = 'softskills';
 	datosCollection!: AngularFirestoreCollection<any>;
 	datosArray!: any[];
 	datos!: Observable<Isoftskills[]>;
 	numRegistros!: number;
-	id!: string;
-	cheMediaT: any;
-	//   , private cheMedia: CheMediaService
-	registroDoc: AngularFirestoreDocument<any>;
-	registro: Observable<any>;
-	//   campos = [
-	// { nombre: 'Campo 1', clave: 'campo1' },
-	// { nombre: 'Campo 2', clave: 'campo2' },
-	camposSoftskills = [{ name: 'name' } , { urlImage: 'url' } , { level: '11' }];
 
-// Agrega más campos según sea necesario
-//   ];
+	editMode = false;
+	dialogForm!: FormGroup;
+	softskillsCollection: AngularFirestoreCollection<Isoftskills>;
+	@ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+	isEditing: boolean = false;
+	// softskillCollection: AngularFirestoreCollection<any>;
+	softskillsItems: Observable<Isoftskills[]>;
 
-constructor(public portfolioData: PortfolioService, public firestore: AngularFirestore,
-	private firebaseService: FirebaseService, fb: FormBuilder) {
-		this.form = new FormGroup ({
-			name: new FormControl (['', [Validators.required, Validators.minLength(2)]]),
-			urlImage: new FormControl ([''], [Validators.required, Validators.minLength(2)]),
-			level: new FormControl (['', [Validators.required, Validators.minLength(2)]])
+	dialogData: Isoftskills = {
+		name: '',
+		urlImage: '',
+		level: ''
+	};
+	//------------------------------
+	softskills!: Observable<any[]>;
+	selectedsoftSkill: any = {};
+	selectedImage: File | null = null;
+	downloadURL: string | null = null;
+	dialogItem: any;
+
+	constructor(private firebaseService: FirebaseService,
+		private firestore: AngularFirestore,
+		private dialog: MatDialog,
+		private storage: AngularFireStorage) {
+
+		this.softskillsCollection = this.firestore.collection<Isoftskills>(this.nombreColeccion);
+		this.softskillsItems = this.softskillsCollection.valueChanges();
+		this.dialogForm = new FormGroup({
+			name: new FormControl(['', [Validators.required, Validators.minLength(2)]]),
+			urlImage: new FormControl([''], [Validators.required, Validators.minLength(2)]),
+			level: new FormControl(['', [Validators.required, Validators.minLength(2)]])
 		});
-	this.registroDoc = this.firestore.collection(this.nombreColeccion).doc(this.id);
-	this.registro = this.registroDoc.valueChanges();
-}
 
-onSubmit() {
-	console.log('DEBUG: onSubmit', this.form.value);
-	// const fdes = this.form.value;
-	this.agregarRegistros([
-		{ 
-			name: this.form.value.name,
-			urlImage: this.form.value.urlImage,
-			level: this.form.value.level
-		}]);
-	this.form.reset;
-	this.modoNuevoRegistro = false;
-}
-
-modificarRegistro() {
-	this.registroDoc.update(this.registro).then(() => {
-		console.log('Registro modificado correctamente');
-	}).catch(error => {
-		console.error('Error al modificar el registro', error);
-	});
-}
-
-onCrear(event: Event) {
-	console.log("DEBUG: onCrear");
-	// this.agregarRegistro();
-	// let objetoFormulario = this.form.controls;
-	// let keysForms = Object.keys(objetoFormulario);
-	// let valueForms = Object.value(objetoFormulario);
-	this.modoNuevoRegistro = true;
-}
-/* **************************************************************************************************** */
-
-verificarYCrearMiColeccion(): void {
-	const nombreColeccion = 'softskills';
-	this.firebaseService.verificarYCrearColeccion(nombreColeccion,
-		{
-			descripcion: 'url'
-		});
-}
-
-/* **************************************************************************************************** */
-getNumRegistros(): void {
-	this.datosCollection?.get().subscribe((snapshot) => {
-		this.numRegistros = snapshot.size;
-		console.log("REG:", this.numRegistros);
-	});
-}
-/* **************************************************************************************************** */
-getDatosArray(): void {
-	this.datosCollection.snapshotChanges().pipe(
-		map((snapshots) => {
-			return snapshots.map((snapshot) => {
-				const data = snapshot.payload.doc.data();
-				const id = snapshot.payload.doc.id;
-				return { id, ...data };
-			});
-		})
-	).subscribe((array) => {
-		this.datosArray = array;
-		console.log('DEBUG: getDatosArray', this.datosArray);
-	})
-}
-/* **************************************************************************************************** */
-agregarRegistro(): void {
-	console.log('DEBUG: agregarRegistro');
-	// let objetoFormulario = this.form.controls;
-	// let keysForms = Object.keys(objetoFormulario);
-	// let valueForms = Object.values(objetoFormulario);
-	// console.log('DEBUG: Objetos key y value',keysForms,valueForms);
-	// valueForms[0].value;
-	// console.log('DEBUG: Form value', valueForms[0]);
-	// console.log('Valor', valueForms[0]);
-
-	// this.agregarRegistros([{ descripcion: valueForms[0] }]);
-
-	/* if (this.form.invalid) {
-		alert('Formulario invalido');
-		return;
+		this.datosCollection = this.firestore.collection(this.nombreColeccion);
+		this.datos = this.datosCollection.valueChanges();
+		this.getDatosArray();
+		this.getNumRegistros();
+		this.verificarYCrearMiColeccion();
+		console.log('DEBUG: SOFTSKILLS');
+	}
+	selectsoftSkill(softskill: any) {
+		console.log('DEBUG: SELECTSOFTSKILL');
+		this.selectedsoftSkill = { ...softskill };
+		console.log('DEBUG: selectedsoftSkill:', this.selectedsoftSkill.name);
+		console.log('DEBUG: selectedsoftSkill:', this.selectedsoftSkill.urlImage);
+		console.log('DEBUG: selectedsoftSkill:', this.selectedsoftSkill.level);
+		this.selectedImage = null;
+	}
+	ngOnInit(): void {
+		console.log('DEBUG: SOFTSKILLS COMPONENTS');
+		this.verificarYCrearMiColeccion();
+		this.datosCollection = this.firestore.collection(this.nombreColeccion);
+		this.datos = this.datosCollection.valueChanges();
+		this.softskillsCollection = this.firestore.collection<any>(this.nombreColeccion);
 	}
 
-	const nuevoRegistro = this.form.value;
-	this.firestore.collection(this.nombreColeccion).add(nuevoRegistro)
-		.then(() => {
-			console.log('Registro agregado correctamente');
-			this.form.reset();
-		})
-		.catch((error) => {
-			console.error('Error al agregar el registro:', error);
-		}); */
-	let des = this.form.value.descripcion;
-	console.log('add', des);
-	alert(des);
-	// this.agregarRegistros([{ descripcion: des }]);
-}
+	readDocument(documentId: string) {
+		this.firestore.collection('softskills').doc(documentId).snapshotChanges().subscribe(snapshot => {
+			const data = snapshot.payload.data();
+			const id = snapshot.payload.id;
 
-
-agregarRegistros(registros: any[]): void {
-	console.log('DEBUG: agregarRegistros', registros);
-	const batch = this.firestore.firestore.batch();
-	registros.forEach((registro) => {
-		const nuevoDocumentoRef = this.datosCollection.ref.doc();
-		batch.set(nuevoDocumentoRef, registro);
-	});
-	batch.commit()
-		.then(() => {
-			console.log('Registros agregados correctamente');
-		})
-		.catch((error) => {
-			console.error('Error al agregar los registros:', error);
+			// Utiliza el ID y los datos del documento como desees
+			console.log('ID:', id);
+			console.log('Datos:', data);
 		});
-}
-/* **************************************************************************************************** */
-borrarRegistro(documentId: string) {
-	console.log('DEBUG: borrarRegistro:', documentId);
-	this.firestore.collection(this.nombreColeccion).doc(documentId).delete()
-		.then(() => {
-			console.log('Registro eliminado correctamente');
-		})
-		.catch((error) => {
-			console.error('Error al eliminar el registro:', error);
+	}
+
+	openAddDialog(): void {
+		this.editMode = false;
+		this.dialogData = {
+			name: '',
+			urlImage: '',
+			level: ''
+		};
+		this.openDialog();
+	}
+	openEditDialog(item: Isoftskills): void {
+		this.editMode = true;
+		this.dialogData = { ...item };
+		this.openDialog();
+	}
+	openDialog(): void {
+		const dialogRef = this.dialog.open(this.dialogTemplate);
+		dialogRef.afterClosed().subscribe(() => {
+
 		});
-}
-
-
-/* **************************************************************************************************** */
-
-/* **************************************************************************************************** */
-
-saveForm(): void {
-	// event.preventDefault;
-	this.agregarRegistro();
-	console.log("Guardando cambios");
-	this.modoNuevoRegistro = false;
-}
-
-onCancelNuevoRegistro() {
-	this.modoNuevoRegistro = false;
-}
-onEdit(id: any, i: number, event: Event) {
-	console.log('Entra a onEdit');
-
-	this.editID = id;
-	this.i = i;
-	console.log("i", i);
-	console.log("editID", this.editID);
-	console.log("this.form.value: ", this.form.value);
-	console.log("id: ", id);
-
-	this.form.setValue({
-		descripcion: this.datosArray[i].descripcion
-	});
-	console.log("this.form.value: ", this.form.value);
-	this.modoEdicion = true;
-}
-
-onSaveEdit(event: Event) {
-	event.preventDefault;
-	// this.portfolioData.putEducacion(this.form.value, this.editID).subscribe(data => {
-	console.log("this.form.value: ", this.form.value);
-	console.log("id: ", this.editID);
-	// console.log("EDUCACIÓN method PUT Data Editada", data);
-
-	// this.portfolioData.obtenerOneDatosEducacion(this.editID).subscribe(data => {
-	// console.log("Dato: " + JSON.stringify(data));
-	// this.datosArray[this.i] = data;
-	console.log("myPortfolio[i : ", this.datosArray[this.i]);
-	// });
-
-	// });
-	this.modoEdicion = false;
-}
-
-onSaveNewNuevoRegistro(event: Event) {
-	console.log('Entra a onSaveNewNuevoRegistro');
-
-	event.preventDefault;
-	// this.datosCollection = this.firestore.collection(this.nombreColeccion);
-	// this.datos = this.datosCollection.valueChanges();
-	// this.getDatosArray();
-	// this.getNumRegistros();
-	let ff = this.form.value;
-	console.log("onSaveNewNuevoRegistro this.form.value: ", ff, this.form.value);
-	this.firestore.collection(this.nombreColeccion).add(this.form.value);
-	this.modoNuevoRegistro = false;
-	this.modoEdicion = false;
-	console.log('Sale de onSaveNewNuevoRegistro');
-
-}
-onCancel(event: Event){
-	let objetoFormulario = this.form.controls;
-	let keysForms = Object.keys(objetoFormulario);
-	console.log("keysForm: ", keysForms);
-	let valueForms = Object.values(objetoFormulario);
-	console.log("valuesForm: ", valueForms);
-
-	valueForms[0].setValue('');
-	this.modoEdicion = false;
-}
-
-onDelete(i: number, id: string, event: Event) {
-	console.log('DEBUG: onDelete:', i, id);
-	this.i = i;
-	this.id = id;
-	this.modoEdicion = false;
-	// event.preventDefault;
-	Swal.fire({
-		title: "¿ELIMINAR SKILL ?",
-		text: "No podrá revertir los cambios.",
-		icon: 'warning',
-		confirmButtonColor: '#d33',
-		confirmButtonText: 'Si, Eliminar.',
-		showCancelButton: true,
-		cancelButtonText: 'Cancelar',
-		cancelButtonColor: '#00b5ff'
-	}).then((result) => {
-		if (result.isConfirmed) {
-			console.log('DEBUG: onDelete result is:', result.isConfirmed);
-
-			this.borrarRegistro(id);
-			// borrarRegistro(id: string): void {
-			// this.firestore.collection(this.nombreColeccion).doc(registroId).delete()
-			// this.firestore.collection(this.nombreColeccion).doc(id).delete()
-			// 	.then(() => {
-			// 		console.log('Registro eliminado correctamente');
-			// 	})
-			// 	.catch((error) => {
-			// 		console.error('Error al eliminar el registro:', error);
-			// 	});
-			//   }
-
+	}
+	saveItem(): void {
+		if (this.editMode) {
+			// Guardar cambios
+			this.softskillsCollection.doc().update(this.dialogData);
+		} else {
+			// Añadir nuevo elemento
+			this.softskillsCollection.add(this.dialogData);
 		}
-	});
-	Swal.fire({
-		title: 'ITEM ELIMINADO',
-		icon: 'success',
-		showConfirmButton: false,
-		timer: 1000
-	});
-	console.log("ondelete end borrando registro");
-}
+		// Cerrar el diálogo después de guardar
+		this.dialog.closeAll();
+	}
+	savesoftSkill() {
+		if (this.selectedsoftSkill.id) {
+			this.softskillsCollection.doc(this.selectedsoftSkill.id).update(this.selectedsoftSkill);
+		} else {
+			const softskillData = { ...this.selectedsoftSkill };
 
-ngOnInit(): void {
+			if (this.selectedImage) {
+				const filePath = 'softskills/';
+				const fileRef = this.storage.ref(filePath);
+				const task = this.storage.upload(filePath, this.selectedImage);
 
-	this.verificarYCrearMiColeccion();
-	this.datosCollection = this.firestore.collection(this.nombreColeccion);
-	this.datos = this.datosCollection.valueChanges();
-	this.getDatosArray();
-	this.getNumRegistros();
-	/* this.cheMedia.getMedia().subscribe(data => {
-		this.cheMediaT = data;
-		console.log('DEBUG: getmedia', this.cheMediaT);
-		
-	}); */
-	// this.agregarRegistros([{ descripcion: 'Descripcion add new 1' }]);
-	// this.agregarRegistros([{ descripcion: 'Descripcion add new 2' }]);
+				task.snapshotChanges().subscribe(() => {
+					fileRef.getDownloadURL().subscribe(url => {
+						softskillData.urlImagen = url;
+						this.softskillsCollection.add(softskillData);
+						this.selectedsoftSkill = {};
+						this.selectedImage = null;
+					});
+				});
+			} else {
+				this.softskillsCollection.add(softskillData);
+				this.selectedsoftSkill = {};
+			}
+		}
+	}
+	deleteItem(item: any): void {
+		// Eliminar el elemento de la colección en Firebase
+		this.firebaseService.deleteRecord('skills', item);/* .delete(); */
+	}
 
-}
+
+	/* **************************************************************************************************** */
+	verificarYCrearMiColeccion(): void {
+		this.firebaseService.verificarYCrearColeccion(this.nombreColeccion,
+			{
+				name: 'Name',
+				urlImage: '',
+				level: '89'
+			});
+	}
+	/* **************************************************************************************************** */
+	getNumRegistros(): void {
+		this.datosCollection?.get().subscribe((snapshot) => {
+			this.numRegistros = snapshot.size;
+			console.log("REG:", this.numRegistros);
+		});
+	}
+	/* **************************************************************************************************** */
+	getDatosArray(): void {
+		this.datosCollection.snapshotChanges().pipe(
+			map((snapshots) => {
+				return snapshots.map((snapshot) => {
+					const data = snapshot.payload.doc.data();
+					const id = snapshot.payload.doc.id;
+					return { id, ...data };
+				});
+			})
+		).subscribe((array) => {
+			this.datosArray = array;
+			console.log('DEBUG: getDatosArray', this.datosArray);
+		})
+	}
+	/* **************************************************************************************************** */
+	borrarRegistro(documentId: string) {
+		console.log('DEBUG: SOFTSKILLS: -LN171- borrarRegistro:', documentId);
+		this.firestore.collection(this.nombreColeccion).doc(documentId).delete()
+			.then(() => {
+				console.log('Registro eliminado correctamente');
+			})
+			.catch((error) => {
+				console.error('Error al eliminar el registro:', error);
+			});
+	}
+
+	onFileSelected(event: any) {
+		const file: File = event.target.files[0];
+		if (file) {
+			this.selectedImage = file;
+			const filePath = `gs://ap-frontend-ac93a.appspot.com/softskills/${this.selectedImage.name}`;
+			const fileRef = this.storage.ref(filePath);
+			const task = this.storage.upload(filePath, file);
+
+			task.snapshotChanges()
+				.pipe(
+					finalize(() => {
+						fileRef.getDownloadURL().subscribe(url => {
+							this.downloadURL = url;
+						});
+					})
+				)
+				.subscribe();
+		}
+		this.selectedImage = file;
+	}
+
+	uploadImageToFirebase = (file: File): Promise<string> => {
+		return new Promise((resolve, reject) => {
+			// Crea una referencia al almacenamiento de Firebase
+			const storageRef = this.storage.ref('softskills/');
+			// Genera un nombre de archivo único para evitar colisiones
+			const fileName = `${Date.now()}_${file.name}`;
+			// Crea una referencia al archivo en el almacenamiento
+			const fileRef = storageRef.child(fileName);
+			// Sube el archivo al almacenamiento
+			const uploadTask = fileRef.put(file);
+			// Escucha los eventos de estado de la carga
+			
+				// const file = target.files[0];
+				const path = 'test/' + file.name;
+				const ref = this.storage.ref(path);
+				this.task = ref.put(file);
+				this.percentage = this.task.percentageChanges();
+			  			
+		});
+	};
+	upload(name: File) {
+		const file = name; // Aquí debes colocar el archivo que deseas subir
+		const filePath = `gs://ap-frontend-ac93a.appspot.com/softskills/${file.name}`;
+		// const fileRef = this.storage.ref(filePath);
+		const task = this.storage.upload(filePath, file);
+
+		// const storageRef = this.storage.ref();
+		const fileRef = this.storage.upload('images/' , file.name);
+		// fileRef.put(file).then((snapshot) => {
+	  	console.log('Imagen subida correctamente');
+		// });
+	}
+	inputfile() {
+		// Ejemplo de uso
+		const inputFile = document.getElementById('inputFile') as HTMLInputElement;
+		let myVariable: String = this.dialogData.urlImage; // Variable para guardar el valor del almacenamiento
+
+		inputFile.addEventListener('change', async () => {
+			const selectedFile = inputFile;
+
+			try {
+				const downloadURL = await this.uploadImageToFirebase(this.dialogItem.urlImage);
+				myVariable = downloadURL; // Guarda el valor del almacenamiento en la variable
+				console.log('URL de descarga:', downloadURL);
+			} catch (error) {
+				console.error('Error al cargar la imagen:', error);
+			}
+		});
+	}
 }
 

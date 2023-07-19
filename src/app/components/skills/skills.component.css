@@ -1,4 +1,4 @@
-.image-sm {
+.image-sm , .preview-image {
     width: 150px;
     height: 150px;
 }
@@ -19,8 +19,8 @@
   }
   
   .logo-sm{
-    width: 1.2em;
-    height: 1.2em;
+    width: 40px;
+    height: 40px;
     margin: .5em;
   }
   
